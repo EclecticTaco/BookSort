@@ -1,0 +1,2 @@
+# MVP
+Book Curating App
