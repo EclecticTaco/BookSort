@@ -1,19 +1,72 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, Component } from 'react';
+import { Button, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Test 1</Text>
-    </View>
-  );
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+      error: false,
+      books: ['placeholder'],
+    }
+
+    this.getBook = this.getBook.bind(this)
+  }
+  
+    
+
+   getBook() {
+    return fetch('https://openlibrary.org/api/books?bibkeys=ISBN:9780060930219&jscmd=details&format=json')
+    .then((response) => response.json())
+    .then((json) => {
+      console.log('GET request made')
+      const books = this.state.books.concat(json);
+      this.setState({books: books, loaded: true})
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+
+  render() {
+    const {loaded} = this.state
+      if (!loaded) {
+        return (
+          <View style={styles.main}>
+          <Text>
+            {this.state.books[0]}
+          </Text>
+          <Button 
+          onPress={this.getBook}
+          title="Grab a book!"
+          />
+        </View>
+        )
+      } else {
+        return (
+        <View style={styles.main}>
+          <Text>
+            {JSON.stringify(this.state.books[1])}
+          </Text>
+          <Button 
+          onPress={this.getBook}
+          title="Grab a book!"
+          />
+        </View>
+        )
+      }
+  }
+
+
 }
 
+
 const styles = StyleSheet.create({
-  container: {
+  main: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-});
+  }
+})
+
+
