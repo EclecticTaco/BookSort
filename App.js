@@ -5,9 +5,9 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loaded: false,
+      updated: false,
       error: false,
-      books: ['placeholder'],
+      books: [],
     }
 
     this.getBook = this.getBook.bind(this)
@@ -17,9 +17,22 @@ export default class App extends Component {
    getBook() {
     return fetch('https://openlibrary.org/api/books?bibkeys=ISBN:9780060930219&jscmd=data&format=json')
     .then((response) => response.json())
-    .then((json) => {
-      const books = this.state.books.concat(json);
-      this.setState({books: books, loaded: true})
+    .then((book) => {
+      let fullISBN = '';
+      for (const key in book) {
+        fullISBN = key
+      }
+      let partISBN = fullISBN.split(':');
+      let ISBN = partISBN[1]
+      let temp = [ISBN, book]
+      // let updatedBooks = this.state.books.concat(temp)
+      // this.setState({books: updatedBooks, updated: true})
+      this.setState({
+        books:[...this.state.books, temp],
+        updated: true,
+      })
+      console.log(this.state.books)
+      // this.setState({books: books, loaded: true})
     })
     .catch((error) => {
       console.log(error);
@@ -27,12 +40,12 @@ export default class App extends Component {
   }
 
   render() {
-    const {loaded} = this.state
-      if (!loaded) {
+    const {updated} = this.state
+      if (!updated) {
         return (
           <View style={styles.main}>
           <Text>
-            {this.state.books[0]}
+            No Books!
           </Text>
           <Button 
           onPress={this.getBook}
@@ -41,16 +54,14 @@ export default class App extends Component {
         </View>
         )
       } else {
-        const book = this.state.books[1]
-        const ISBN = 'ISBN:9780060930219'
-        const cover = JSON.stringify(book[ISBN].cover.large)
-        console.log(cover)
+        // const book = this.state.books[1]
+        // const ISBN = 'ISBN:9780060930219'
+        // const cover = JSON.stringify(book[ISBN].cover.large)
         return (
         <View style={styles.main}>
-          <Image
-            style= {styles.cover} 
-            source= {{uri: cover}}  
-          />
+          <Text>
+            Books Present!
+          </Text>
           <Button 
           onPress={this.getBook}
           title="Grab a book!"
@@ -71,6 +82,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cover: {
+    width: 50,
+    height: 50,
+  },
+  second: {
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 50,
     height: 50,
   }
