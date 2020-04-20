@@ -1,5 +1,6 @@
 import React, { useState, Component } from 'react';
 import { Button, StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native';
+import BookEntry from './src/components/BookEntry'
 
 export default class App extends Component {
   constructor(props) {
@@ -18,12 +19,10 @@ export default class App extends Component {
     return fetch('https://openlibrary.org/api/books?bibkeys=ISBN:9780060930219&jscmd=data&format=json')
     .then((response) => response.json())
     .then((book) => {
-      let fullISBN = '';
+      let ISBN = '';
       for (const key in book) {
-        fullISBN = key
+        ISBN = key
       }
-      let partISBN = fullISBN.split(':');
-      let ISBN = partISBN[1]
       let temp = [ISBN, book]
       this.setState({
         books:[...this.state.books, temp],
@@ -55,9 +54,14 @@ export default class App extends Component {
         // const cover = JSON.stringify(book[ISBN].cover.large)
         return (
         <View style={styles.main}>
-          <Text>
-            Books Present!
-          </Text>
+          {this.state.books.map((book) => {
+            const ISBN = book[0];
+            const bookInfo = book[1];
+            const author = bookInfo[ISBN].authors[0].name;
+            const title = bookInfo[ISBN].title
+            // const description = bookInfo[ISBN].details.description
+            return <BookEntry author={author} title={title} />
+          })}
           <Button 
           onPress={this.getBook}
           title="Grab a book!"
@@ -89,3 +93,64 @@ const styles = StyleSheet.create({
     height: 50,
   }
 })
+
+/*  {
+  "authors": [
+     {
+      "name": "Thomas Pynchon",
+      "url": "https://openlibrary.org/authors/OL4423376A/Thomas_Pynchon",
+    },
+  ],
+  "cover":  {
+    "large": "https://covers.openlibrary.org/b/id/40630-L.jpg",
+    "medium": "https://covers.openlibrary.org/b/id/40630-M.jpg",
+    "small": "https://covers.openlibrary.org/b/id/40630-S.jpg",
+  },
+  "ebooks": [
+     {
+      "availability": "borrow",
+      "borrow_url": "https://openlibrary.org/books/OL7284980M/V._(Perennial_Classics)/borrow",
+      "checkedout": false,
+      "formats":  {},
+      "preview_url": "https://archive.org/details/vperennialclassi00thom",
+    },
+  ],
+  "excerpts": [
+     {
+      "comment": "",
+      "first_sentence": true,
+      "text": "Christmas Eve, 1955, Benny Profane, wearing black levis, suede jacket, sneakers and big cowboy hat, happened to pass through Norfolk, Virginia.",
+    },
+     {
+      "comment": "",
+      "text": "Christmas Eve, 1955, Benny Profane, wearing black levis, suede jacket, sneakers and big cowboy hat, happened to pass through Norfolk, Virginia.",
+    },
+  ],
+  "identifiers":  {
+    "goodreads": [
+      "410",
+    ],
+    "isbn_10": [
+      "0060930217",
+    ],
+    "isbn_13": [
+      "9780060930219",
+    ],
+    "librarything": [
+      "8883",
+    ],
+    "openlibrary": [
+      "OL7284980M",
+    ],
+  },
+  "key": "/books/OL7284980M",
+  "number_of_pages": 533,
+  "publish_date": "April 1, 1999",
+  "publishers": [
+     {
+      "name": "Harper Perennial Modern Classics",
+    },
+  ],
+  "title": "V. (Perennial Classics)",
+  "url": "https://openlibrary.org/books/OL7284980M/V._(Perennial_Classics)",
+} */
