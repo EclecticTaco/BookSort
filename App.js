@@ -25,14 +25,10 @@ export default class App extends Component {
       let partISBN = fullISBN.split(':');
       let ISBN = partISBN[1]
       let temp = [ISBN, book]
-      // let updatedBooks = this.state.books.concat(temp)
-      // this.setState({books: updatedBooks, updated: true})
       this.setState({
         books:[...this.state.books, temp],
         updated: true,
       })
-      console.log(this.state.books)
-      // this.setState({books: books, loaded: true})
     })
     .catch((error) => {
       console.log(error);
