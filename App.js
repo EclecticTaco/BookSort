@@ -16,10 +16,9 @@ export default class App extends Component {
     
 
    getBook() {
-    return fetch('https://openlibrary.org/api/books?bibkeys=ISBN:9780060930219&jscmd=details&format=json')
+    return fetch('https://openlibrary.org/api/books?bibkeys=ISBN:9780060930219&jscmd=data&format=json')
     .then((response) => response.json())
     .then((json) => {
-      console.log('GET request made')
       const books = this.state.books.concat(json);
       this.setState({books: books, loaded: true})
     })
@@ -46,7 +45,7 @@ export default class App extends Component {
         return (
         <View style={styles.main}>
           <Text>
-            {JSON.stringify(this.state.books[1])}
+            {console.log(JSON.stringify(this.state.books[1]))}
           </Text>
           <Button 
           onPress={this.getBook}
