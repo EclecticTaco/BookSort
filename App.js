@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { Button, StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import { Button, StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native';
 
 export default class App extends Component {
   constructor(props) {
@@ -12,8 +12,7 @@ export default class App extends Component {
 
     this.getBook = this.getBook.bind(this)
   }
-  
-    
+   
 
    getBook() {
     return fetch('https://openlibrary.org/api/books?bibkeys=ISBN:9780060930219&jscmd=data&format=json')
@@ -42,11 +41,16 @@ export default class App extends Component {
         </View>
         )
       } else {
+        const book = this.state.books[1]
+        const ISBN = 'ISBN:9780060930219'
+        const cover = JSON.stringify(book[ISBN].cover.large)
+        console.log(cover)
         return (
         <View style={styles.main}>
-          <Text>
-            {console.log(JSON.stringify(this.state.books[1]))}
-          </Text>
+          <Image
+            style= {styles.cover} 
+            source= {{uri: cover}}  
+          />
           <Button 
           onPress={this.getBook}
           title="Grab a book!"
@@ -65,7 +69,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  cover: {
+    width: 50,
+    height: 50,
   }
 })
-
-
