@@ -99,7 +99,7 @@ function Item({title, author, cover, length}) {
     <View >
       <Image
         source={{uri: cover}}
-        style={{width: 100, height: 100, resizeMode: 'cover'}}
+        style={{width: 100, height: 150, resizeMode: 'contain'}}
       />
       <Text>{title}</Text>
       <Text>{author}</Text>
@@ -118,10 +118,8 @@ const styles = StyleSheet.create({
     top: '15%',
   },
   item: {
-    backgroundColor: 'blue',
     height: 200,
     width: 200,
-    resizeMode: 'cover',
   },
   container: {
     justifyContent: 'center',
