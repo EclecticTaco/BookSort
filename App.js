@@ -107,6 +107,8 @@ function Item({title, author, cover, length}) {
 const styles = StyleSheet.create({
   main: {
     alignItems: 'center',
+    height: '100%',
+    width: '100%'
   },
   input: {
     top: '15%',
@@ -120,6 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'black',
     height: 200,
+    width: '100%'
   }
 
 })
