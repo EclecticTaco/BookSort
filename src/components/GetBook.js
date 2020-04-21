@@ -18,6 +18,7 @@ export default class App extends Component  {
             <ScrollView
             scrollEnabled= {false}
             keyboardShouldPersistTaps= {'handled'}
+            style={styles.getBook}
             >
                 <View>
                     <TextInput
@@ -49,5 +50,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'stretch',
     },
+    getBook: {
+        flexDirection: 'row',
+        height: 200,
+    }
 
 })

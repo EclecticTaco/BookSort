@@ -96,7 +96,7 @@ export default class App extends Component {
 function Item({title, author, cover, length}) {
   console.log(cover)
   return (
-    <View >
+    <View style={{paddingLeft: 5, paddingRight: 5}}>
       <Image
         source={{uri: cover}}
         style={{width: 100, height: 150, resizeMode: 'contain'}}
@@ -117,12 +117,8 @@ const styles = StyleSheet.create({
   input: {
     top: '15%',
   },
-  item: {
-    height: 200,
-    width: 200,
-  },
   container: {
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
     height: 200,
     width: '100%'
   }
