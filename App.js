@@ -112,11 +112,14 @@ const styles = StyleSheet.create({
     top: '15%',
   },
   item: {
-    backgroundColor: 'blue'
+    backgroundColor: 'blue',
+    height: 200,
+    width: 200,
   },
   container: {
     justifyContent: 'center',
     backgroundColor: 'black',
+    height: 200,
   }
 
 })
