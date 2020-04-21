@@ -9,6 +9,7 @@ export default class App extends Component {
     this.state = {
       updated: false,
       books: [],
+      listISBN: [],
     }
 
     this.getBook = this.getBook.bind(this)
@@ -38,22 +39,23 @@ export default class App extends Component {
         for (const key in book) {
           ISBN = key
         }
-        // console.log(book[ISBN])
         const details = book[ISBN]
         const author = details.authors[0].name;
         const title = details.title;
         const cover = details.cover.large;
         const length = details.number_of_pages;
         let bookData = {
+          ISBN: ISBN,
           author: author,
           title: title,
           cover: cover,
           length: length,
         }
-        console.log(temp)
+
         let temp = [ISBN, bookData]
         this.setState({
-          books:[...this.state.books, temp],
+          books:[...this.state.books, bookData],
+          listISBN: [...this.state.listISBN, ISBN],
           updated: true,
         })
       }
@@ -84,11 +86,7 @@ export default class App extends Component {
           <SafeAreaView style={styles.main}>
               <GetBook getBook={this.getBook} />
             <View style={styles.main}>
-              {this.state.books.map((book) => {
-                DATA.push(book[1])
-                // const description = bookInfo[ISBN].details.description
-                return <BookEntry ISBN={ISBN} author={author} title={title} />
-              })}
+              {console.log(this.state.books)}
             </View>
           </SafeAreaView>
         )
