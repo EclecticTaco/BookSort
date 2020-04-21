@@ -42,7 +42,9 @@ export default class App extends Component {
       if (!updated) {
         return (
           <View style={styles.main}>
-            <GetBook getBook={this.getBook} />
+            <View style={styles.input}>
+              <GetBook getBook={this.getBook} />
+            </View>
             <View>
               <Text>
                 No Books!
@@ -55,7 +57,7 @@ export default class App extends Component {
         // const ISBN = 'ISBN:9780060930219'
         // const cover = JSON.stringify(book[ISBN].cover.large)
         return (
-          <View>
+          <View style={styles.main}>
             <GetBook getBook={this.getBook} />
             <View style={styles.main}>
               {this.state.books.map((book) => {
@@ -80,10 +82,9 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   input: {
-    height: 40,
+    top: '15%',
   }
 })
 

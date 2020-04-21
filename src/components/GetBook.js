@@ -1,5 +1,5 @@
 import React, {Component } from 'react';
-import { Button, StyleSheet, Text, View, ActivityIndicator, Image, TextInput } from 'react-native';
+import { Button, StyleSheet, Text, View, ActivityIndicator, Image, TextInput, Keyboard, ScrollView} from 'react-native';
 
 export default class App extends Component  {
     constructor(props) {
@@ -15,23 +15,39 @@ export default class App extends Component  {
     }
     render() {
         return (
-            <View>
+            <ScrollView
+            scrollEnabled= {false}
+            keyboardShouldPersistTaps= {'handled'}
+            >
                 <View>
                     <TextInput
+                    style = {styles.inputBox}
                     placeholder= 'Enter ISBN-10 or ISBN-13'
                     onChangeText= {this.onChangeText}
                     value= {this.state.value}
                     defaultValue= {this.state.text}
+                    keyboardType= {'number-pad'}
+                    maxLength= {13}
                     /> 
                 </View>
+
                 <View>
-                <Button 
-                onPress={() => {this.props.getBook(this.state.value)}}
-                title="Grab a book!"
-                />
+                    <Button 
+                    onPress={() => {this.props.getBook(this.state.value)}}
+                    title="Grab a book!"
+                    />
                 </View>
-            </View>
+            </ScrollView>
         )
 
     }
 }
+
+const styles = StyleSheet.create({
+    inputBox: {
+        paddingBottom: 15,
+        justifyContent: 'center',
+        alignItems: 'stretch',
+    },
+
+})
