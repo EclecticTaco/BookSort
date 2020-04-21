@@ -63,8 +63,9 @@ export default class App extends Component {
               {this.state.books.map((book) => {
                 const ISBN = book[0];
                 const bookInfo = book[1];
-                const author = bookInfo[ISBN].authors[0].name;
-                const title = bookInfo[ISBN].title
+                const details = bookInfo[ISBN]
+                const author = details.authors[0].name;
+                const title = details.title
                 // const description = bookInfo[ISBN].details.description
                 return <BookEntry key={ISBN} author={author} title={title} />
               })}
@@ -87,6 +88,8 @@ const styles = StyleSheet.create({
     top: '15%',
   }
 })
+
+//bookInfo[ISBN]:
 
 /*  {
   "authors": [
