@@ -1,5 +1,5 @@
 import React, {Component } from 'react';
-import { Button, StyleSheet,Text, View, Alert} from 'react-native';
+import { Button, StyleSheet,Text, View, Alert, SafeAreaView} from 'react-native';
 import BookEntry from './src/components/BookEntry'
 import GetBook from './src/components/GetBook'
 
@@ -27,12 +27,13 @@ export default class App extends Component {
           [
             {
               text: 'OK',
-              onPress: () =>console.log('ok'),
+              onPress: () => {return 'ok'},
               style: 'OK',
             }
           ]
         )
       } else {
+        console.log('fetched')
         let ISBN = '';
         for (const key in book) {
           ISBN = key
@@ -50,10 +51,10 @@ export default class App extends Component {
   }
 
   render() {
-    const {updated} = this.state
+    const {updated} = this.state;
       if (!updated) {
         return (
-          <View style={styles.main}>
+          <SafeAreaView style={styles.main}>
             <View style={styles.input}>
               <GetBook getBook={this.getBook} />
             </View>
@@ -62,15 +63,13 @@ export default class App extends Component {
                 No Books!
               </Text>
             </View>
-          </View>
+          </SafeAreaView>
         )
       } else {
-        // const book = this.state.books[1]
-        // const ISBN = 'ISBN:9780060930219'
-        // const cover = JSON.stringify(book[ISBN].cover.large)
+        let DATA = [];
         return (
-          <View style={styles.main}>
-            <GetBook getBook={this.getBook} />
+          <SafeAreaView style={styles.main}>
+              <GetBook getBook={this.getBook} />
             <View style={styles.main}>
               {this.state.books.map((book) => {
                 const ISBN = book[0];
@@ -80,11 +79,21 @@ export default class App extends Component {
                 const title = details.title;
                 const cover = details.cover.large;
                 const length = details.number_of_pages;
+                const temp = {
+                  ISBN: ISBN,
+                  bookInfo: bookInfo,
+                  details: details,
+                  author: author,
+                  title: title,
+                  cover: cover,
+                  length: length,
+                };
+                DATA.push(temp);
                 // const description = bookInfo[ISBN].details.description
-                return <BookEntry key={ISBN} ISBN={ISBN} author={author} title={title} />
+                return <BookEntry ISBN={ISBN} author={author} title={title} />
               })}
             </View>
-          </View>
+          </SafeAreaView>
         )
       }
   }
