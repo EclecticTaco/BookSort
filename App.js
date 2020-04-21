@@ -1,5 +1,5 @@
 import React, {Component } from 'react';
-import { Button, StyleSheet,Text, View, Alert, SafeAreaView} from 'react-native';
+import {StyleSheet,Text, View, Alert, SafeAreaView, FlatList} from 'react-native';
 import BookEntry from './src/components/BookEntry'
 import GetBook from './src/components/GetBook'
 
@@ -34,7 +34,6 @@ export default class App extends Component {
           ]
         )
       } else {
-        console.log('fetched')
         let ISBN = '';
         for (const key in book) {
           ISBN = key
@@ -73,21 +72,19 @@ export default class App extends Component {
             <View style={styles.input}>
               <GetBook getBook={this.getBook} />
             </View>
-            <View>
-              <Text>
-                No Books!
-              </Text>
-            </View>
           </SafeAreaView>
         )
       } else {
-        let DATA = [];
         return (
           <SafeAreaView style={styles.main}>
               <GetBook getBook={this.getBook} />
-            <View style={styles.main}>
-              {console.log(this.state.books)}
-            </View>
+              <View style={styles.container}>
+                <FlatList
+                  data= {this.state.books}
+                  renderItem= {({item}) => <Item title={item.title} author={item.author} cover={item.cover} length={item.length} />}
+                  horizontal= {true}
+                />
+              </View>
           </SafeAreaView>
         )
       }
@@ -96,15 +93,32 @@ export default class App extends Component {
 
 }
 
+function Item({title, author, cover, length}) {
+  return (
+    <View style={styles.item}>
+      <Text>{title}</Text>
+      <Text>{author}</Text>
+      <Text>{cover}</Text>
+      <Text>{length}</Text>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   main: {
-    flex: 1,
     alignItems: 'center',
   },
   input: {
     top: '15%',
+  },
+  item: {
+    backgroundColor: 'blue'
+  },
+  container: {
+    justifyContent: 'center',
+    backgroundColor: 'black',
   }
+
 })
 
 //bookInfo[ISBN]:
