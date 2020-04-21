@@ -1,5 +1,5 @@
 import React, {Component } from 'react';
-import {StyleSheet,Text, View, Alert, SafeAreaView, FlatList} from 'react-native';
+import {StyleSheet,Text, View, Alert, SafeAreaView, FlatList, Image} from 'react-native';
 import BookEntry from './src/components/BookEntry'
 import GetBook from './src/components/GetBook'
 
@@ -94,11 +94,15 @@ export default class App extends Component {
 }
 
 function Item({title, author, cover, length}) {
+  console.log(cover)
   return (
-    <View style={styles.item}>
+    <View >
+      <Image
+        source={{uri: cover}}
+        style={{width: 100, height: 100, resizeMode: 'cover'}}
+      />
       <Text>{title}</Text>
       <Text>{author}</Text>
-      <Text>{cover}</Text>
       <Text>{length}</Text>
     </View>
   )
@@ -117,10 +121,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     height: 200,
     width: 200,
+    resizeMode: 'cover',
   },
   container: {
     justifyContent: 'center',
-    backgroundColor: 'black',
     height: 200,
     width: '100%'
   }
