@@ -1,5 +1,5 @@
 import React, {Component } from 'react';
-import { Button, StyleSheet,Text, View, } from 'react-native';
+import { Button, StyleSheet,Text, View, Alert} from 'react-native';
 import BookEntry from './src/components/BookEntry'
 import GetBook from './src/components/GetBook'
 
@@ -17,20 +17,32 @@ export default class App extends Component {
    // 0060930217 isbn 10
 
    getBook(params) {
-     console.log('fetched')
     return fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${params}&jscmd=data&format=json`)
     .then((response) => response.json())
     .then((book) => {
-      let ISBN = '';
-      for (const key in book) {
-        ISBN = key
+      if (JSON.stringify(book) === '{}') {
+        Alert.alert(
+          'Invalid ISBN:',
+          'Cannot Fetch Details of Book',
+          [
+            {
+              text: 'OK',
+              onPress: () =>console.log('ok'),
+              style: 'OK',
+            }
+          ]
+        )
+      } else {
+        let ISBN = '';
+        for (const key in book) {
+          ISBN = key
+        }
+        let temp = [ISBN, book]
+        this.setState({
+          books:[...this.state.books, temp],
+          updated: true,
+        })
       }
-      let temp = [ISBN, book]
-      this.setState({
-        books:[...this.state.books, temp],
-        updated: true,
-      })
-      // console.log(this.state.books)
     })
     .catch((error) => {
       console.log(error);
@@ -63,11 +75,13 @@ export default class App extends Component {
               {this.state.books.map((book) => {
                 const ISBN = book[0];
                 const bookInfo = book[1];
-                const details = bookInfo[ISBN]
+                const details = bookInfo[ISBN];
                 const author = details.authors[0].name;
-                const title = details.title
+                const title = details.title;
+                const cover = details.cover.large;
+                const length = details.number_of_pages;
                 // const description = bookInfo[ISBN].details.description
-                return <BookEntry key={ISBN} author={author} title={title} />
+                return <BookEntry key={ISBN} ISBN={ISBN} author={author} title={title} />
               })}
             </View>
           </View>
