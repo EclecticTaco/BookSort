@@ -1,5 +1,5 @@
-import React, { useState, Component } from 'react';
-import { Button, StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native';
+import React, {} from 'react';
+import {Text, View, } from 'react-native';
 
 export default function BookEntry({author, title}) {
     return (

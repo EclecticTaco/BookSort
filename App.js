@@ -1,22 +1,24 @@
-import React, { useState, Component } from 'react';
-import { Button, StyleSheet, Text, View, ActivityIndicator, Image } from 'react-native';
+import React, {Component } from 'react';
+import { Button, StyleSheet,Text, View, } from 'react-native';
 import BookEntry from './src/components/BookEntry'
+import GetBook from './src/components/GetBook'
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       updated: false,
-      error: false,
       books: [],
     }
 
     this.getBook = this.getBook.bind(this)
   }
-   
+   // 978006093019 isbn 13
+   // 0060930217 isbn 10
 
-   getBook() {
-    return fetch('https://openlibrary.org/api/books?bibkeys=ISBN:9780060930219&jscmd=data&format=json')
+   getBook(params) {
+     console.log('fetched')
+    return fetch(`https://openlibrary.org/api/books?bibkeys=ISBN:${params}&jscmd=data&format=json`)
     .then((response) => response.json())
     .then((book) => {
       let ISBN = '';
@@ -28,6 +30,7 @@ export default class App extends Component {
         books:[...this.state.books, temp],
         updated: true,
       })
+      // console.log(this.state.books)
     })
     .catch((error) => {
       console.log(error);
@@ -39,34 +42,32 @@ export default class App extends Component {
       if (!updated) {
         return (
           <View style={styles.main}>
-          <Text>
-            No Books!
-          </Text>
-          <Button 
-          onPress={this.getBook}
-          title="Grab a book!"
-          />
-        </View>
+            <GetBook getBook={this.getBook} />
+            <View>
+              <Text>
+                No Books!
+              </Text>
+            </View>
+          </View>
         )
       } else {
         // const book = this.state.books[1]
         // const ISBN = 'ISBN:9780060930219'
         // const cover = JSON.stringify(book[ISBN].cover.large)
         return (
-        <View style={styles.main}>
-          {this.state.books.map((book) => {
-            const ISBN = book[0];
-            const bookInfo = book[1];
-            const author = bookInfo[ISBN].authors[0].name;
-            const title = bookInfo[ISBN].title
-            // const description = bookInfo[ISBN].details.description
-            return <BookEntry author={author} title={title} />
-          })}
-          <Button 
-          onPress={this.getBook}
-          title="Grab a book!"
-          />
-        </View>
+          <View>
+            <GetBook getBook={this.getBook} />
+            <View style={styles.main}>
+              {this.state.books.map((book) => {
+                const ISBN = book[0];
+                const bookInfo = book[1];
+                const author = bookInfo[ISBN].authors[0].name;
+                const title = bookInfo[ISBN].title
+                // const description = bookInfo[ISBN].details.description
+                return <BookEntry key={ISBN} author={author} title={title} />
+              })}
+            </View>
+          </View>
         )
       }
   }
@@ -81,16 +82,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  cover: {
-    width: 50,
-    height: 50,
-  },
-  second: {
-    flex: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 50,
-    height: 50,
+  input: {
+    height: 40,
   }
 })
 
