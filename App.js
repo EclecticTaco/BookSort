@@ -38,7 +38,20 @@ export default class App extends Component {
         for (const key in book) {
           ISBN = key
         }
-        let temp = [ISBN, book]
+        // console.log(book[ISBN])
+        const details = book[ISBN]
+        const author = details.authors[0].name;
+        const title = details.title;
+        const cover = details.cover.large;
+        const length = details.number_of_pages;
+        let bookData = {
+          author: author,
+          title: title,
+          cover: cover,
+          length: length,
+        }
+        console.log(temp)
+        let temp = [ISBN, bookData]
         this.setState({
           books:[...this.state.books, temp],
           updated: true,
@@ -72,23 +85,7 @@ export default class App extends Component {
               <GetBook getBook={this.getBook} />
             <View style={styles.main}>
               {this.state.books.map((book) => {
-                const ISBN = book[0];
-                const bookInfo = book[1];
-                const details = bookInfo[ISBN];
-                const author = details.authors[0].name;
-                const title = details.title;
-                const cover = details.cover.large;
-                const length = details.number_of_pages;
-                const temp = {
-                  ISBN: ISBN,
-                  bookInfo: bookInfo,
-                  details: details,
-                  author: author,
-                  title: title,
-                  cover: cover,
-                  length: length,
-                };
-                DATA.push(temp);
+                DATA.push(book[1])
                 // const description = bookInfo[ISBN].details.description
                 return <BookEntry ISBN={ISBN} author={author} title={title} />
               })}
